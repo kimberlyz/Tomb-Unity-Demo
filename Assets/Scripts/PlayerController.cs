@@ -24,4 +24,12 @@ public class PlayerController : MonoBehaviour {
 		transform.Translate(Vector3.forward * moveVertical * speed);
 		transform.Rotate(Vector3.up * rotateHorizontal);
 	}
+
+	void OnTriggerEnter(Collider other) 
+	{
+		if (other.gameObject.CompareTag ("Pick Up"))
+		{
+			other.gameObject.SetActive (false);
+		}
+	}
 }
