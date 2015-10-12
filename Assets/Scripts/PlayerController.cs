@@ -1,14 +1,23 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
 
 	public float speed;
+	public Text countText;
+	public Text winText;
+	public GameObject secretDoor;
 
 	private Rigidbody rb;
+	private int count;
+
 	// Use this for initialization
 	void Start () {
 		rb = GetComponent<Rigidbody> ();
+		count = 0;
+		SetCountText ();
+		winText.text = "";
 	}
 	
 	// Update is called once per frame
@@ -30,6 +39,22 @@ public class PlayerController : MonoBehaviour {
 		if (other.gameObject.CompareTag ("Pick Up"))
 		{
 			other.gameObject.SetActive (false);
+			count += 1;
+			SetCountText ();
+		}
+
+		if (count == 1) 
+		{
+			secretDoor.transform.Rotate(0, -90, 0);
+		}
+	}
+
+	void SetCountText()
+	{
+		countText.text = "Gem Count: " + count.ToString ();
+		if (count == 6) 
+		{
+			winText.text = "You have escaped safely! :)";
 		}
 	}
 }
