@@ -8,9 +8,12 @@ public class PlayerController : MonoBehaviour {
 	public Text countText;
 	public Text winText;
 	public GameObject secretDoor;
+	public GameObject exitDoor;
+	public AudioClip nyanCat;
 
 	private Rigidbody rb;
 	private int count;
+	private bool playOnce = true;
 
 	// Use this for initialization
 	void Start () {
@@ -47,14 +50,31 @@ public class PlayerController : MonoBehaviour {
 		{
 			secretDoor.transform.Rotate(0, -90, 0);
 		}
+
+		if (other.gameObject.CompareTag ("Exit") && count == 5) 
+		{
+			exitDoor.transform.Rotate (0,-90,0);
+		}
+	}
+
+	void OnTriggerExit(Collider other)
+	{
+		if (other.gameObject.CompareTag ("Exit") && playOnce)
+		{
+			winText.text = "You win!";
+			countText.text = "";
+			playOnce = false;
+
+			AudioSource.PlayClipAtPoint(nyanCat, transform.position);
+		}
 	}
 
 	void SetCountText()
 	{
 		countText.text = "Gem Count: " + count.ToString ();
-		if (count == 6) 
+		if (count == 5) 
 		{
-			winText.text = "You have escaped safely! :)";
+			countText.text = "You have found all the gems! Proceed to the exit!";
 		}
 	}
 }
